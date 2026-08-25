@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Convite — Laura de Bettio Dutra</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; min-height: 100%;
+    background: #f7f4f1; overflow: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  #app {
+    width: 100vw; height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: scale(.985);
+    transition: opacity .55s ease, transform .55s ease, visibility 0s linear .55s;
+    background: #f7f4f1;
+  }
+  .screen.active {
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: scale(1);
+    transition: opacity .55s ease, transform .55s ease;
+  }
+  .art {
+    height: 100dvh; width: auto; max-width: 100vw;
+    object-fit: contain; display: block;
+    user-select: none; -webkit-user-drag: none;
+  }
+
+  /* Invisible interaction zones, positioned relative to the artwork. */
+  .hotspot {
+    position: absolute; border: 0; background: transparent;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    padding: 0; margin: 0;
+  }
+  .hotspot:focus-visible {
+    outline: 2px solid #e85a9b; outline-offset: 3px;
+  }
+
+  /* Cover seal: coordinates are percentages of the full portrait art. */
+  #openBtn {
+    width: 24%; height: 13%;
+    left: 38%; top: 42%;
+  }
+
+  /* Page 2: location and gifts icons. */
+  #locationBtn {
+    width: 20%; height: 13%;
+    left: 24%; top: 57%;
+  }
+  #giftsBtn {
+    width: 20%; height: 13%;
+    left: 56%; top: 57%;
+  }
+
+  #backBtn {
+    width: 22%; height: 7%;
+    left: 39%; top: 87%;
+  }
+
+  .hint {
+    position: absolute;
+    bottom: 3.5%;
+    left: 50%; transform: translateX(-50%);
+    color: #e85a9b;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-align: center;
+    opacity: .9;
+    pointer-events: none;
+  }
+
+  @media (max-width: 430px) {
+    .hint { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- TELA 1: envelope -->
+  <section id="screen1" class="screen active" aria-label="Abertura do convite">
+    <img class="art" src="capa.png" alt="Envelope do convite de 15 anos de Laura">
+    <button id="openBtn" class="hotspot" aria-label="Abrir convite"></button>
+    <div class="hint">TOQUE NO SELO PARA ABRIR</div>
+  </section>
+
+  <!-- TELA 2: convite -->
+  <section id="screen2" class="screen" aria-label="Convite">
+    <img class="art" src="convite.png" alt="Convite de 15 anos de Laura">
+    <button id="locationBtn" class="hotspot" aria-label="Abrir localização"></button>
+    <button id="giftsBtn" class="hotspot" aria-label="Ver sugestões de presentes"></button>
+  </section>
+
+  <!-- TELA 3: presentes -->
+  <section id="screen3" class="screen" aria-label="Sugestões de presentes">
+    <img class="art" src="presentes.png" alt="Sugestões de presentes">
+    <button id="backBtn" class="hotspot" aria-label="Voltar ao convite"></button>
+  </section>
+
+</div>
+
+<script>
+  const screens = {
+    1: document.getElementById('screen1'),
+    2: document.getElementById('screen2'),
+    3: document.getElementById('screen3')
+  };
+
+  function showScreen(n) {
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[n].classList.add('active');
+  }
+
+  document.getElementById('openBtn').addEventListener('click', () => showScreen(2));
+  document.getElementById('giftsBtn').addEventListener('click', () => showScreen(3));
+  document.getElementById('backBtn').addEventListener('click', () => showScreen(2));
+
+  /*
+    COLOQUE AQUI O LINK DA LOCALIZAÇÃO:
+    Exemplo:
+    const locationUrl = "https://maps.google.com/?q=SEU+ENDERECO";
+  */
+  const locationUrl = "";
+  document.getElementById('locationBtn').addEventListener('click', () => {
+    if (locationUrl) {
+      window.open(locationUrl, '_blank', 'noopener');
+    } else {
+      alert('O link da localização ainda não foi configurado.');
+    }
+  });
+</script>
+</body>
+</html>
